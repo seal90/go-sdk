@@ -21,6 +21,7 @@ import (
 	"log"
 
 	"github.com/google/uuid"
+	"google.golang.org/grpc/metadata"
 
 	pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
 )
@@ -42,9 +43,17 @@ func (c *GRPCClient) PublishEvent(ctx context.Context, pubsubName, topicName str
 		return errors.New("topic name required")
 	}
 
+	metadataData := make(map[string]string)
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		if ns, exists := md["virtual-namespace"]; exists {
+			metadataData["virtual_namespace"] = ns[0]
+		}
+	}
+
 	request := &pb.PublishEventRequest{
 		PubsubName: pubsubName,
 		Topic:      topicName,
+		Metadata:   metadataData,
 	}
 	for _, o := range opts {
 		o(request)

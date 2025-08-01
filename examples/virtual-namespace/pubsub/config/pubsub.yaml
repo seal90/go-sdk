@@ -1,0 +1,46 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: rocketmq-pubsub
+spec:
+  type: pubsub.rocketmq
+  version: v1
+  metadata:
+    - name: instanceName
+      value: dapr-rocketmq-test
+    - name: consumerGroup
+      value: virtualnamespace_g
+    - name: nameServer
+      value: "127.0.0.1:9876"
+    - name: retries
+      value: 3
+    - name: consumerModel
+      value: "clustering"
+    - name: consumeOrderly
+      value: false
+    # - name: rocketmq-sub-expression
+    #   value: "virtual-namespace IS NOT NULL AND virtual-namespace='gray'"
+    # - name: rocketmq-sub-type
+    #   value: "SQL92"
+
+--- 
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: rocketmq-pubsub-2
+spec:
+  type: pubsub.rocketmq
+  version: v1
+  metadata:
+    - name: instanceName
+      value: dapr-rocketmq-test-2
+    - name: consumerGroup
+      value: virtualnamespace_g2
+    - name: nameServer
+      value: "127.0.0.1:9876"
+    - name: retries
+      value: 3
+    - name: consumerModel
+      value: "clustering"
+    - name: consumeOrderly
+      value: false
